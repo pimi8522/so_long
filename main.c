@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:15 by miduarte          #+#    #+#             */
-/*   Updated: 2025/06/24 16:38:58 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:07:37 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,57 @@ int handleKeypress(int keycode, t_vars *vars)
 	if (keycode == XK_Escape)
 		xclose(vars);
 	else if (keycode == XK_Up)
+	{
 		vars->pos_y -= 10;
+		vars->state = STATE_RUN;
+	}
 	else if (keycode == XK_Down)
+	{
 		vars->pos_y += 10;
+		vars->state = STATE_RUN;
+	}
 	else if (keycode == XK_Left)
+	{
 		vars->pos_x -= 10;
+		vars->state = STATE_RUN;
+	}
 	else if (keycode == XK_Right)
+	{
 		vars->pos_x += 10;
+		vars->state = STATE_RUN;
+	}
 	write(1,"Key Pressed: Idk\n", 17);
 	return (0);
 }
-int	ft_render(t_vars *vars)
+
+int handleKeyRelease(int keycode, t_vars *vars)
 {
-	static int	count = 0;
-	if (++count >= 10000)
-	{
-		vars->frame = 1 - vars->frame; // Swap between 0 and 1
-		count = 0;
-	}
-	vars->img.img = vars->sprites->idle[vars->frame];
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, vars->pos_x, vars->pos_y);
-	return (0);
+    if (keycode == 65361 || keycode == 65362 || keycode == 65363 || keycode == 65364)
+        vars->state = STATE_IDLE;
+    return (0);
+}
+
+int ft_render(t_vars *vars)
+{
+    static int count = 0;
+    void *img;
+
+    if (vars->state == STATE_RUN) {
+        if (++count >= 8) { // speed of run animation
+            vars->anim_frame = (vars->anim_frame + 1) % RUN_FRAMES;
+            count = 0;
+        }
+        img = vars->sprites.run[vars->anim_frame];
+    } else {
+        if (++count >= 10000) { // slower idle animation
+            vars->anim_frame = (vars->anim_frame + 1) % IDLE_FRAMES;
+            count = 0;
+        }
+        img = vars->sprites.idle[vars->anim_frame];
+    }
+    mlx_clear_window(vars->mlx, vars->win);
+    mlx_put_image_to_window(vars->mlx, vars->win, img, vars->pos_x, vars->pos_y);
+    return (0);
 }
 
 int	main(void)
