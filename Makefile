@@ -6,14 +6,16 @@
 #    By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/23 11:53:39 by miduarte          #+#    #+#              #
-#    Updated: 2025/06/23 12:37:51 by miduarte         ###   ########.fr        #
+#    Updated: 2025/06/25 12:03:59 by miduarte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME    = so_long
 
 SRCS    = main.c map.c player.c render.c utils.c
-OBJS    = $(SRCS:.c=.o)
+GNL_DIR = ./get_next_line
+GNL_SRCS = $(GNL_DIR)/get_next_line.c $(GNL_DIR)/get_next_line_utils.c
+OBJS    = $(SRCS:.c=.o) $(GNL_SRCS:.c=.o)
 
 CC      = cc
 CFLAGS  = -Wall -Wextra -Werror
@@ -29,7 +31,7 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(MLX)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I$(MLX_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(MLX_DIR) -I$(GNL_DIR) -c $< -o $@
 
 clean:
 	$(RM) $(OBJS)
