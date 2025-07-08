@@ -198,12 +198,12 @@ void	render_map(t_vars *vars)
 			img = NULL;
 			if (vars->map[y][x] == '1')
 				img = vars->map_textures.wall;
-			else if (vars->map[y][x] == '0')
-				img = vars->map_textures.floor;
 			else if (vars->map[y][x] == 'C')
 				img = vars->map_textures.collectible;
 			else if (vars->map[y][x] == 'E')
 				img = vars->map_textures.exit;
+			else if (vars->map[y][x] != 'P')
+				img = vars->map_textures.floor;
 			/* player tile handled separately */
 			if (img)
 				mlx_put_image_to_window(vars->mlx, vars->win, img, x
@@ -268,6 +268,7 @@ static void	move_player(t_vars *vars, int dx, int dy)
 	gx = (vars->pos_x + dx) / TILE_SIZE;
 	gy = (vars->pos_y + dy) / TILE_SIZE;
 	cell = vars->map[gy][gx];
+	vars->map[gy][gx] = '0';
 	// -- MOVE MESSAGE --
 	if (dx < 0)
 		write(1, "Moved left!\n", 12);
@@ -301,9 +302,14 @@ static void	move_player(t_vars *vars, int dx, int dy)
 			return ;
 		}
 	}
-	vars->pos_x += dx;
-	vars->pos_y += dy;
-	vars->state = STATE_RUN;
+	else
+	{
+		vars->pos_x += dx;
+		vars->pos_y += dy;
+		vars->map[gy][gx] = 'P';
+		vars->state = STATE_RUN;
+	}
+
 }
 
 int	handleKeypress(int keycode, t_vars *vars)
