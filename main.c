@@ -1,5 +1,6 @@
 #include "./minilibx-linux/mlx.h"
 #include "./minilibx-linux/mlx_int.h"
+#include "./ft_printf/ft_printf.h"
 #include "get_next_line.h"
 #include "so_long.h"
 #include <X11/X.h>
@@ -7,9 +8,8 @@
 #include <fcntl.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <unistd.h> // for write()
+#include <unistd.h>
 
-#define RUN_FRAMES 3
 #define IDLE_FRAMES 5
 #define TILE_SIZE 100 // pixels per map cell
 
@@ -22,7 +22,6 @@ typedef enum e_state
 typedef struct s_imgs
 {
 	void			*idle[IDLE_FRAMES];
-	void			*run[RUN_FRAMES];
 }					t_imgs;
 
 typedef struct s_map_textures
@@ -46,6 +45,7 @@ typedef struct s_vars
 	int total_collectibles; // how many were on the map
 	t_imgs			sprites;
 	t_map_textures	map_textures;
+	int				moves;
 }					t_vars;
 
 /* Count all 'C' in the map */
@@ -77,6 +77,16 @@ int	ft_strlen(char *s)
 		i++;
 	return (i);
 }
+
+/* void map_copy()
+{
+	char **map2;
+}
+
+int flood_fill(char **map)
+{
+
+} */
 /*
  * Load the .ber file into a NULL-terminated array of strings.
  */
@@ -261,54 +271,49 @@ static bool	can_move(t_vars *vars, int dx, int dy)
 // helper to actually move & collect
 static void	move_player(t_vars *vars, int dx, int dy)
 {
-	int		gx;
-	int		gy;
-	char	cell;
-
-	gx = (vars->pos_x + dx) / TILE_SIZE;
-	gy = (vars->pos_y + dy) / TILE_SIZE;
-	cell = vars->map[gy][gx];
-	vars->map[gy][gx] = '0';
-	// -- MOVE MESSAGE --
-	if (dx < 0)
-		write(1, "Moved left!\n", 12);
-	else if (dx > 0)
-		write(1, "Moved right!\n", 13);
-	else if (dy < 0)
-		write(1, "Moved up!\n", 10);
-	else if (dy > 0)
-		write(1, "Moved down!\n", 12);
+	int		gx = (vars->pos_x + dx) / TILE_SIZE;
+	int		gy = (vars->pos_y + dy) / TILE_SIZE;
+	int		old_gx = vars->pos_x / TILE_SIZE;
+	int		old_gy = vars->pos_y / TILE_SIZE;
+	char	cell = vars->map[gy][gx];
 	if (cell == '1')
 		return ; // wall: no further action
+
+	// Clear the player from the old position
+	vars->map[old_gy][old_gx] = '0';
+
 	if (cell == 'C')
 	{
 		vars->collected++;
-		vars->map[gy][gx] = '0';
 		// -- COLLECT MESSAGE --
-		write(1, "Collected Mask Shard!\n", 22);
+		ft_printf("Collected Mask Shard!\n");
 	}
-	else if (cell == 'E')
+
+	if (cell == 'E')
 	{
 		if (vars->collected == vars->total_collectibles)
 		{
 			// -- SUCCESS EXIT MESSAGE --
-			write(1, "Shaw long!\n", 11);
+			ft_printf("Shaw long!\n");
 			xclose(vars);
 		}
 		else
 		{
 			// -- BLOCKED EXIT MESSAGE --
-			write(1, "I mustn't release yet...\n", 25);
+			ft_printf("I mustn't release yet...\n");
+			// Restore player to old position
+			vars->map[old_gy][old_gx] = 'P';
 			return ;
 		}
 	}
-	else
-	{
-		vars->pos_x += dx;
-		vars->pos_y += dy;
-		vars->map[gy][gx] = 'P';
-		vars->state = STATE_RUN;
-	}
+
+	// Move player to the new position
+	vars->pos_x += dx;
+	vars->pos_y += dy;
+	vars->map[gy][gx] = 'P';
+		// -- MOVE MESSAGE --
+	ft_printf("Moves: %d\n", vars->moves);
+	vars->moves++;
 
 }
 
@@ -324,6 +329,8 @@ int	handleKeypress(int keycode, t_vars *vars)
 		move_player(vars, 0, -TILE_SIZE);
 	else if (keycode == XK_Down && can_move(vars, 0, TILE_SIZE))
 		move_player(vars, 0, TILE_SIZE);
+	
+
 	return (0);
 }
 
@@ -347,21 +354,11 @@ int	ft_render(t_vars *vars)
 	static int	count = 0;
 
 	render_map(vars);
-	if (vars->state == STATE_RUN)
+	img = vars->sprites.idle[vars->anim_frame];
+	if (++count >= 300)
 	{
-		img = vars->sprites.run[vars->anim_frame];
-		vars->anim_frame = (vars->anim_frame + 1) % RUN_FRAMES;
-		/* after one run frame, go back to idle */
-		vars->state = STATE_IDLE;
-	}
-	else
-	{
-		img = vars->sprites.idle[vars->anim_frame];
-		if (++count >= 300)
-		{
-			vars->anim_frame = (vars->anim_frame + 1) % IDLE_FRAMES;
-			count = 0;
-		}
+		vars->anim_frame = (vars->anim_frame + 1) % IDLE_FRAMES;
+		count = 0;
 	}
 	mlx_put_image_to_window(vars->mlx, vars->win, img, vars->pos_x,
 		vars->pos_y);
@@ -374,20 +371,19 @@ int	main(int argc, char **argv)
 	int w, h;
 
 	if (argc != 2)
-		return (write(2, "Usage: Silklong <map.ber>\n", 26), 1);
+		return (ft_printf("Usage: Silklong <map.ber>\n"));
 	vars.map = load_map(argv[1]);
 	if (!vars.map)
 		return (1);
 
 	set_player_start(&vars);
 	vars.collected = 0;
+	vars.moves = 0;
 	vars.total_collectibles = count_collectibles(vars.map);
 
 	// -- BOOT MESSAGE --
-	write(1, "Welcome to Silklong!\n", 21);
-	write(1,
-		"Hornet seems to have lost her way in search of the release date. Help her collect everything!\n",
-		94);
+	ft_printf("Welcome to Silklong!\n");
+	ft_printf("Hornet seems to have lost her way in search of the release date. Help her collect everything!\n");
 
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, TILE_SIZE * ft_strlen(vars.map[0]),
@@ -395,7 +391,7 @@ int	main(int argc, char **argv)
 
 	if (!load_map_textures(&vars))
 	{
-		write(1, "Error loading map textures\n", 27);
+		ft_printf("Error loading map textures\n");
 		free_map(vars.map);
 		return (1);
 	}
@@ -414,13 +410,6 @@ int	main(int argc, char **argv)
 	vars.sprites.idle[3] = mlx_xpm_file_to_image(vars.mlx, "./assets/idle3.xpm",
 			&w, &h);
 	vars.sprites.idle[4] = mlx_xpm_file_to_image(vars.mlx, "./assets/idle4.xpm",
-			&w, &h);
-
-	vars.sprites.run[0] = mlx_xpm_file_to_image(vars.mlx, "./assets/run0.xpm",
-			&w, &h);
-	vars.sprites.run[1] = mlx_xpm_file_to_image(vars.mlx, "./assets/run1.xpm",
-			&w, &h);
-	vars.sprites.run[2] = mlx_xpm_file_to_image(vars.mlx, "./assets/run2.xpm",
 			&w, &h);
 
 	mlx_loop_hook(vars.mlx, ft_render, &vars);
