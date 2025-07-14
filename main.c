@@ -6,40 +6,13 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 10:50:31 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 11:28:45 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/14 13:05:10 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-/* Count all 'C' in the map */
-static int	count_collectibles(char **map)
-{
-	int y, x, cnt;
-	y = 0, x = 0, cnt = 0;
-	while (map[y])
-	{
-		x = 0;
-		while (map[y][x])
-		{
-			if (map[y][x] == 'C')
-				cnt++;
-			x++;
-		}
-		y++;
-	}
-	return (cnt);
-}
 
-int	ft_strlen(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
 
 int	main(int argc, char **argv)
 {
@@ -51,11 +24,15 @@ int	main(int argc, char **argv)
 	vars.map = load_map(argv[1]);
 	if (!vars.map)
 		return (1);
-
+	if (map_gauntlet(vars.map) == 0)
+	{
+		ft_printf("Error: Invalid Map Layout!");
+		return (0);
+	}
 	set_player_start(&vars);
 	vars.collected = 0;
 	vars.moves = 0;
-	vars.total_collectibles = count_collectibles(vars.map);
+	vars.total_collectibles = count_item(vars.map, 'C');
 
 	// -- BOOT MESSAGE --
 	ft_printf("Welcome to Silklong!\n");
@@ -67,7 +44,7 @@ int	main(int argc, char **argv)
 
 	if (!load_map_textures(&vars))
 	{
-		ft_printf("Error loading map textures\n");
+		ft_printf("Error: Failed loading map textures\n");
 		free_map(vars.map);
 		return (1);
 	}

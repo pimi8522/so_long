@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:59 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 12:38:42 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/14 13:05:04 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,12 @@ typedef struct s_vars
 
 
 //main.c
-int	ft_strlen(char *s);
+
+//map_checker.c
+int	count_item(char **map, char item);
+int map_gauntlet (char **map);
+
+
 
 //player.c
 void	move_player(t_vars *vars, int dx, int dy);

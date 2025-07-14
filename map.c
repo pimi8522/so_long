@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:29 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 11:19:04 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/14 12:51:30 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,20 @@ char	**load_map(const char *filename)
 {
 	int			fd;
 	char		*line;
+	int			len;
 	int			rows = 0;
 	t_line_node	*head = NULL;
 	t_line_node	*tail = NULL;
 	char		**map;
 	int			i;
+
+	len = ft_strlen(filename);
+	if (len < 5 || ft_strncmp(filename + len - 4, ".ber", 4) != 0)
+	{
+		ft_printf("Error: non .ber file attempted to be read!\n");
+		return (NULL);
+	}
+		
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
