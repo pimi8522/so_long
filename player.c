@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:42 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 10:58:29 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:09:29 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,3 +59,4 @@ void	move_player(t_vars *vars, int dx, int dy)
 	vars->moves++;
 
 }
+

@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:35 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 10:54:17 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:09:33 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,28 @@ int	ft_render(t_vars *vars)
 	mlx_put_image_to_window(vars->mlx, vars->win, img, vars->pos_x,
 		vars->pos_y);
 	return (0);
+}
+
+void	set_player_start(t_vars *vars)
+{
+	int	y;
+	int	x;
+
+	y = 0;
+	while (vars->map[y])
+	{
+		x = 0;
+		while (vars->map[y][x])
+		{
+			if (vars->map[y][x] == 'P')
+			{
+				vars->pos_x = x * TILE_SIZE;
+				vars->pos_y = y * TILE_SIZE;
+				vars->map[y][x] = '0';
+				return ;
+			}
+			x++;
+		}
+		y++;
+	}
 }

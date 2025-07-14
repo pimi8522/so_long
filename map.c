@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:29 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 10:59:51 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:07:49 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,26 @@ char	**load_map(const char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		perror("Error opening file");
+		ft_printf("Error opening file");
 		return (NULL);
 	}
 	map = NULL;
 	rows = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		map = realloc(map, sizeof(char *) * (rows + 1));
+		map = malloc(sizeof(char *) * (rows + 1));
 		if (!map)
 		{
-			perror("Error allocating memory");
+			ft_printf("Error allocating memory");
 			close(fd);
 			return (NULL);
 		}
 		map[rows++] = line;
 	}
-	map = realloc(map, sizeof(char *) * (rows + 1));
+	map = malloc(sizeof(char *) * (rows + 1));
 	if (!map)
 	{
-		perror("Error reallocating memory");
+		ft_printf("Error mallocating memory");
 		close(fd);
 		return (NULL);
 	}
@@ -64,26 +64,3 @@ void	free_map(char **map)
 	free(map);
 }
 
-void	set_player_start(t_vars *vars)
-{
-	int	y;
-	int	x;
-
-	y = 0;
-	while (vars->map[y])
-	{
-		x = 0;
-		while (vars->map[y][x])
-		{
-			if (vars->map[y][x] == 'P')
-			{
-				vars->pos_x = x * TILE_SIZE;
-				vars->pos_y = y * TILE_SIZE;
-				vars->map[y][x] = '0';
-				return ;
-			}
-			x++;
-		}
-		y++;
-	}
-}
