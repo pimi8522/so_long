@@ -6,7 +6,7 @@
 #    By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/23 11:53:39 by miduarte          #+#    #+#              #
-#    Updated: 2025/07/09 11:22:39 by miduarte         ###   ########.fr        #
+#    Updated: 2025/07/14 12:39:06 by miduarte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ CFLAGS  = -Wall -Wextra -Werror
 
 MLX_DIR = ./minilibx-linux
 PRINTF_DIR = ./ft_printf
+LIBFT_DIR = ./libft
 MLX     = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 RM      = rm -f

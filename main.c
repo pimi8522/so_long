@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 10:50:31 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 11:26:51 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:28:45 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	main(int argc, char **argv)
 	vars.anim_frame = 0;
 	vars.collected = 0; // initialize
 
-	/* load idle/run sprites */
+	/* load idle sprites */
 	vars.sprites.idle[0] = mlx_xpm_file_to_image(vars.mlx, "./assets/idle0.xpm",
 			&w, &h);
 	vars.sprites.idle[1] = mlx_xpm_file_to_image(vars.mlx, "./assets/idle1.xpm",

@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:59 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 11:19:26 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/14 12:38:42 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "./minilibx-linux/mlx.h"
 #include "./minilibx-linux/mlx_int.h"
 #include "./ft_printf/ft_printf.h"
+#include "./libft/libft.h"
 #include "get_next_line.h"
 
 
