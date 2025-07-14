@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 11:30:08 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 13:05:35 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/14 13:18:36 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	count_item(char **map, char item)
 	}
 	return (cnt);
 }
+
+int	flood_fill(char **map)
 //count_item(vars.map, 'C');
 
 int map_gauntlet (char **map)
