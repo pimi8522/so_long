@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:35 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 11:09:33 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:27:52 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void	set_player_start(t_vars *vars)
 			{
 				vars->pos_x = x * TILE_SIZE;
 				vars->pos_y = y * TILE_SIZE;
-				vars->map[y][x] = '0';
 				return ;
 			}
 			x++;

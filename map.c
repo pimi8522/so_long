@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:29 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 11:07:49 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:19:04 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,41 +16,78 @@
 /*
  * Load the .ber file into a NULL-terminated array of strings.
  */
+
+typedef struct	s_line_node
+{
+	char				*line;
+	struct s_line_node	*next;
+}				t_line_node;
+
+static void	free_line_list(t_line_node *head)
+{
+	t_line_node *tmp;
+	while (head)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp->line);
+		free(tmp);
+	}
+}
+
 char	**load_map(const char *filename)
 {
-	int		fd;
-	char	*line;
-	char	**map;
-	int		rows;
+	int			fd;
+	char		*line;
+	int			rows = 0;
+	t_line_node	*head = NULL;
+	t_line_node	*tail = NULL;
+	char		**map;
+	int			i;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-	{
-		ft_printf("Error opening file");
 		return (NULL);
-	}
-	map = NULL;
-	rows = 0;
+
+	// Step 1: Read lines into linked list
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		map = malloc(sizeof(char *) * (rows + 1));
-		if (!map)
+		t_line_node *node = malloc(sizeof(t_line_node));
+		if (!node)
 		{
-			ft_printf("Error allocating memory");
+			free_line_list(head);
 			close(fd);
 			return (NULL);
 		}
-		map[rows++] = line;
+		node->line = line;
+		node->next = NULL;
+		if (!head)
+			head = node;
+		else
+			tail->next = node;
+		tail = node;
+		rows++;
 	}
+	close(fd);
+
+	// Step 2: Allocate final array
 	map = malloc(sizeof(char *) * (rows + 1));
 	if (!map)
 	{
-		ft_printf("Error mallocating memory");
-		close(fd);
+		free_line_list(head);
 		return (NULL);
 	}
-	map[rows] = NULL;
-	close(fd);
+
+	// Step 3: Copy pointers, free nodes
+	i = 0;
+	while (head)
+	{
+		map[i++] = head->line;
+		t_line_node *tmp = head;
+		head = head->next;
+		free(tmp);
+	}
+	map[i] = NULL;
 	return (map);
 }
 
