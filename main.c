@@ -6,13 +6,11 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 10:50:31 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 13:05:10 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:20:48 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-
 
 int	main(int argc, char **argv)
 {
@@ -26,8 +24,9 @@ int	main(int argc, char **argv)
 		return (1);
 	if (map_gauntlet(vars.map) == 0)
 	{
-		ft_printf("Error: Invalid Map Layout!");
-		return (0);
+		ft_printf("Error: Invalid Map Layout!\n");
+		free_map(vars.map);
+		return (1);
 	}
 	set_player_start(&vars);
 	vars.collected = 0;

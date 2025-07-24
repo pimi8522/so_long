@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:29 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 12:51:30 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:17:07 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,22 @@ char	**load_map(const char *filename)
 		return (NULL);
 	}
 
-	// Step 3: Copy pointers, free nodes
+	// Step 3: Transfer lines from list → array, stripping GNL’s trailing '\n'
 	i = 0;
 	while (head)
 	{
+		// strip newline
+		int len = ft_strlen(head->line);
+		if (len > 0 && head->line[len - 1] == '\n')
+			head->line[len - 1] = '\0';
+
 		map[i++] = head->line;
 		t_line_node *tmp = head;
 		head = head->next;
 		free(tmp);
 	}
 	map[i] = NULL;
+
 	return (map);
 }
 
