@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 10:50:31 by miduarte          #+#    #+#             */
-/*   Updated: 2025/08/11 16:47:13 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:12:41 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 	load_idle_sprites(&vars);
 
 	setup_hooks_and_loop(&vars);
-	
-	free_map(vars.map);
+
+	xclose(&vars);
 	return (0);
 }

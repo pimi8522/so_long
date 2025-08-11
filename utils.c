@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:49 by miduarte          #+#    #+#             */
-/*   Updated: 2025/08/11 16:18:41 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:12:17 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,22 @@
 
 int	xclose(t_vars *vars)
 {
-	free_map(vars->map);
-	mlx_destroy_window(vars->mlx, vars->win);
-	mlx_destroy_display(vars->mlx);
-	exit(0);
+    mlx_destroy_image(vars->mlx, vars->sprites.idle[0]);
+    mlx_destroy_image(vars->mlx, vars->sprites.idle[1]);
+    mlx_destroy_image(vars->mlx, vars->sprites.idle[2]);
+    mlx_destroy_image(vars->mlx, vars->sprites.idle[3]);
+    mlx_destroy_image(vars->mlx, vars->sprites.idle[4]);
+    mlx_destroy_image(vars->mlx, vars->map_textures.wall);
+    mlx_destroy_image(vars->mlx, vars->map_textures.floor);
+    mlx_destroy_image(vars->mlx, vars->map_textures.collectible);
+    mlx_destroy_image(vars->mlx, vars->map_textures.exit);
+    mlx_destroy_image(vars->mlx, vars->map_textures.player);
+    mlx_destroy_window(vars->mlx, vars->win);
+    mlx_destroy_display(vars->mlx);
+    free(vars->mlx);
+    free_map(vars->map);
+
+    exit(0);
 }
 
 int	get_map_height(char **map)
