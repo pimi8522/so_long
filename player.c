@@ -6,57 +6,57 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:42 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 11:25:43 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/08/11 16:03:36 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	move_player(t_vars *vars, int dx, int dy)
+
+int get_grid_x(int pos_x, int dx)
 {
-	int		gx = (vars->pos_x + dx) / TILE_SIZE;
-	int		gy = (vars->pos_y + dy) / TILE_SIZE;
-	int		old_gx = vars->pos_x / TILE_SIZE;
-	int		old_gy = vars->pos_y / TILE_SIZE;
-	char	cell = vars->map[gy][gx];
-	if (cell == '1')
-		return ; // wall: no further action
+	int gx;
+	
+	gx = pos_x + dx;
+	gx = gx / TILE_SIZE;
+	return gx;
+}
 
-	// Clear the player from the old position
-	vars->map[old_gy][old_gx] = '0';
+int get_grid_y(int pos_y, int dy)
+{
+	int gy;
+	
+	gy = pos_y + dy;
+	gy = gy / TILE_SIZE;
+	return gy;
+}
 
-	if (cell == 'C')
+void handle_collectible(t_vars *vars)
+{
+	vars->collected++;
+	ft_printf("Collected Mask Shard!\n");
+}
+
+int handle_exit(t_vars *vars)
+{
+	if (vars->collected == vars->total_collectibles)
 	{
-		vars->collected++;
-		// -- COLLECT MESSAGE --
-		ft_printf("Collected Mask Shard!\n");
+		ft_printf("Shaw long!\n");
+		xclose(vars);
+		return (1);
 	}
+	ft_printf("I mustn't release yet...\n");
+	return (0);
+}
 
-	if (cell == 'E')
-	{
-		if (vars->collected == vars->total_collectibles)
-		{
-			// -- SUCCESS EXIT MESSAGE --
-			ft_printf("Shaw long!\n");
-			xclose(vars);
-		}
-		else
-		{
-			// -- BLOCKED EXIT MESSAGE --
-			ft_printf("I mustn't release yet...\n");
-			// Restore player to old position
-			vars->map[old_gy][old_gx] = 'P';
-			return ;
-		}
-	}
-
-	// Move player to the new position
+void move_player_to_new_pos(t_vars *vars, int dx, int dy, int gx, int gy)
+{
 	vars->pos_x += dx;
 	vars->pos_y += dy;
 	vars->map[gy][gx] = 'P';
-		// -- MOVE MESSAGE --
 	ft_printf("Moves: %d\n", vars->moves);
 	vars->moves++;
-
 }
+
+
 

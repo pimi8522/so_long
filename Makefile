@@ -6,14 +6,14 @@
 #    By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/23 11:53:39 by miduarte          #+#    #+#              #
-#    Updated: 2025/07/14 12:57:12 by miduarte         ###   ########.fr        #
+#    Updated: 2025/08/11 16:23:54 by miduarte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME        = so_long
 
-SRCS        = main.c map.c player.c render.c utils.c map_checker.c
+SRCS        = main.c map.c main_setup.c move_player.c player.c render.c utils.c map_checker.c load_map.c map_checker_2.c map_checker_3.c map_gauntlet.c
 GNL_DIR     = ./get_next_line
 GNL_SRCS    = $(GNL_DIR)/get_next_line.c $(GNL_DIR)/get_next_line_utils.c
 OBJS        = $(SRCS:.c=.o) $(GNL_SRCS:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:59 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 13:05:04 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/08/11 16:12:02 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ typedef struct s_map_textures
 	void			*player;
 }					t_map_textures;
 
+typedef struct	s_line_node
+{
+	char				*line;
+	struct s_line_node	*next;
+}				t_line_node;
+
 typedef struct s_vars
 {
 	void			*mlx;
@@ -81,13 +87,47 @@ int	ft_render(t_vars *vars);
 //map.c
 void	set_player_start(t_vars *vars);
 void	free_map(char **map);
-
-
+char	**list_to_map_array(t_line_node *head, int rows);
+t_line_node	*read_lines_to_list(int fd, int *rows);
+t_line_node *create_line_node(char *line);
+void	free_line_list(t_line_node *head);
 //utils.c
 int	xclose(t_vars *vars);
 int	get_map_height(char **map);
 bool	can_move(t_vars *vars, int dx, int dy);
 int	handleKeypress(int keycode, t_vars *vars);
 int	handleKeyRelease(int keycode, t_vars *vars);
+
+
+/* FUNCTIONS */
+int check_args_and_load_map(int argc, char **argv, t_vars *vars);
+void print_boot_message(void);
+int setup_window_and_textures(t_vars *vars);
+void load_idle_sprites(t_vars *vars);
+void setup_vars(t_vars *vars);
+void free_dup(char **m);
+void	free_map(char **map);
+void flood_fill(char **m, int y, int x);
+int find_start(char **m, int *out_y, int *out_x);
+char **dup_map(char **map);
+int valid_rectangle(char **map);
+int valid_chars(char **map);
+int valid_char_row(char *row);
+int valid_rectangle_row(char **map, int len);
+int walls_closed(char **map);
+int find_start_row(char *row, int *out_x);
+int wall_row_closed(char *row);
+int wall_sides_closed(char *row);
+int handle_exit(t_vars *vars);
+void move_player_to_new_pos(t_vars *vars, int dx, int dy, int gx, int gy);
+void handle_collectible(t_vars *vars);
+
+int get_grid_y(int pos_y, int dy);
+int get_grid_x(int pos_x, int dx);
+int dup_map_cleanup(char **copy, int i);
+int map_row_count(char **map)
+;
+int count_item_row(char *row, char item)
+;
 
 

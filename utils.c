@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:49 by miduarte          #+#    #+#             */
-/*   Updated: 2025/07/14 11:01:22 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/08/11 16:18:41 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,10 @@ bool	can_move(t_vars *vars, int dx, int dy)
 	new_py = vars->pos_y + dy;
 	gx = new_px / TILE_SIZE;
 	gy = new_py / TILE_SIZE;
-	/* 1) bounds check */
 	if (gy < 0 || gy >= get_map_height(vars->map))
 		return (false);
 	if (gx < 0 || gx >= ft_strlen(vars->map[0]))
 		return (false);
-	/* 2) wall check */
 	if (vars->map[gy][gx] == '1')
 		return (false);
 	return (true);
