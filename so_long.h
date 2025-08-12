@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:59 by miduarte          #+#    #+#             */
-/*   Updated: 2025/08/12 10:45:00 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/08/12 11:22:28 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ int						load_map_textures(t_vars *vars);
 void					render_map(t_vars *vars);
 char					**load_map(const char *filename);
 int						ft_render(t_vars *vars);
-
+void					render_tile(t_vars *vars, int x, int y,
+							int player_pos[2]);
 void					set_player_start(t_vars *vars);
 void					free_map(char **map);
 char					**list_to_map_array(t_line_node *head, int rows);
@@ -112,3 +113,5 @@ int						get_grid_x(int pos_x, int dx);
 int						dup_map_cleanup(char **copy, int i);
 int						map_row_count(char **map);
 int						count_item_row(char *row, char item);
+int						handle_cell_interaction(t_vars *vars, char cell, int gx,
+							int gy);

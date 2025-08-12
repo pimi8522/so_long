@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:35 by miduarte          #+#    #+#             */
-/*   Updated: 2025/08/12 10:37:58 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/08/12 11:20:19 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,29 +34,39 @@ int	load_map_textures(t_vars *vars)
 	return (1);
 }
 
-void	render_map(t_vars *vars)
+void	render_tile(t_vars *vars, int x, int y, int player_pos[2])
 {
 	void	*img;
-	int		x;
-	int		y;
 
+	if (x == player_pos[0] && y == player_pos[1])
+		return ;
+	if (vars->map[y][x] == '1')
+		img = vars->map_textures.wall;
+	else if (vars->map[y][x] == 'C')
+		img = vars->map_textures.collectible;
+	else if (vars->map[y][x] == 'E')
+		img = vars->map_textures.exit;
+	else
+		img = vars->map_textures.floor;
+	mlx_put_image_to_window(vars->mlx, vars->win, img, x * TILE_SIZE, y
+		* TILE_SIZE);
+}
+
+void	render_map(t_vars *vars)
+{
+	int	x;
+	int	y;
+	int	player_pos[2];
+
+	player_pos[0] = vars->pos_x / TILE_SIZE;
+	player_pos[1] = vars->pos_y / TILE_SIZE;
 	y = 0;
 	while (vars->map[y])
 	{
 		x = 0;
 		while (vars->map[y][x])
 		{
-			if (vars->map[y][x] == '1')
-				img = vars->map_textures.wall;
-			else if (vars->map[y][x] == 'C')
-				img = vars->map_textures.collectible;
-			else if (vars->map[y][x] == 'E')
-				img = vars->map_textures.exit;
-			else if (vars->map[y][x] != 'P')
-				img = vars->map_textures.floor;
-			if (img)
-				mlx_put_image_to_window(vars->mlx, vars->win, img, x
-					* TILE_SIZE, y * TILE_SIZE);
+			render_tile(vars, x, y, player_pos);
 			x++;
 		}
 		y++;

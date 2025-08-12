@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:42 by miduarte          #+#    #+#             */
-/*   Updated: 2025/08/12 10:36:24 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/08/12 11:19:34 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	move_player_to_new_pos(t_vars *vars, int dx, int dy)
 	gy = get_grid_y(vars->pos_y, dy);
 	vars->pos_x += dx;
 	vars->pos_y += dy;
-	vars->map[gy][gx] = 'P';
 	ft_printf("Moves: %d\n", vars->moves);
 	vars->moves++;
 }
