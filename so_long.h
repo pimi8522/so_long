@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:59 by miduarte          #+#    #+#             */
-/*   Updated: 2025/08/12 11:22:28 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/08/12 14:54:33 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_map_textures
 	void				*collectible;
 	void				*exit;
 	void				*player;
+	void				*hornet_on_exit;
 }						t_map_textures;
 
 typedef struct s_line_node
@@ -92,6 +93,7 @@ void					print_boot_message(void);
 int						setup_window_and_textures(t_vars *vars);
 void					load_idle_sprites(t_vars *vars);
 void					setup_vars(t_vars *vars);
+void					destroy_textures(t_vars *vars);
 void					free_dup(char **m);
 void					free_map(char **map);
 void					flood_fill(char **m, int y, int x);

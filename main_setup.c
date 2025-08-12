@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 16:23:16 by miduarte          #+#    #+#             */
-/*   Updated: 2025/08/12 10:22:44 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/08/12 14:56:40 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,7 @@ void	print_boot_message(void)
 {
 	ft_printf("Welcome to Silklong!\n");
 	ft_printf("Hornet seems to have lost her way in search of the release date. \
-		 Help her collect everything!\n");
-}
-
-int	setup_window_and_textures(t_vars *vars)
-{
-	int	width;
-	int	height;
-
-	width = TILE_SIZE * ft_strlen(vars->map[0]);
-	height = TILE_SIZE * get_map_height(vars->map);
-	vars->mlx = mlx_init();
-	vars->win = mlx_new_window(vars->mlx, width, height, "Silklong");
-	if (!load_map_textures(vars))
-	{
-		ft_printf("Error: Failed loading map textures\n");
-		free_map(vars->map);
-		return (1);
-	}
-	return (0);
+			Help her collect everything!\n");
 }
 
 void	load_idle_sprites(t_vars *vars)

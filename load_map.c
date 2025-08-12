@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 15:39:03 by miduarte          #+#    #+#             */
-/*   Updated: 2025/08/12 10:21:05 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/08/12 14:32:35 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,52 @@ char	**load_map(const char *filename)
 	if (!map)
 		free_line_list(head);
 	return (map);
+}
+
+static void	destroy_idle_sprites(t_vars *vars)
+{
+	int	i;
+
+	i = 0;
+	while (i < IDLE_FRAMES)
+	{
+		if (vars->sprites.idle[i])
+			mlx_destroy_image(vars->mlx, vars->sprites.idle[i]);
+		i++;
+	}
+}
+
+static void	destroy_map_textures(t_vars *vars)
+{
+	if (vars->map_textures.wall)
+		mlx_destroy_image(vars->mlx, vars->map_textures.wall);
+	if (vars->map_textures.floor)
+		mlx_destroy_image(vars->mlx, vars->map_textures.floor);
+	if (vars->map_textures.collectible)
+		mlx_destroy_image(vars->mlx, vars->map_textures.collectible);
+	if (vars->map_textures.exit)
+		mlx_destroy_image(vars->mlx, vars->map_textures.exit);
+	if (vars->map_textures.player)
+		mlx_destroy_image(vars->mlx, vars->map_textures.player);
+}
+
+static void	destroy_window_and_display(t_vars *vars)
+{
+	if (vars->win)
+		mlx_destroy_window(vars->mlx, vars->win);
+	if (vars->mlx)
+	{
+		mlx_destroy_display(vars->mlx);
+		free(vars->mlx);
+	}
+}
+
+int	xclose(t_vars *vars)
+{
+	destroy_idle_sprites(vars);
+	destroy_map_textures(vars);
+	destroy_window_and_display(vars);
+	if (vars->map)
+		free_map(vars->map);
+	exit(0);
 }
