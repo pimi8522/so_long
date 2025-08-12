@@ -6,7 +6,7 @@
 /*   By: miduarte <miduarte@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:28:35 by miduarte          #+#    #+#             */
-/*   Updated: 2025/08/11 16:05:25 by miduarte         ###   ########.fr       */
+/*   Updated: 2025/08/12 10:37:58 by miduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	load_map_textures(t_vars *vars)
 {
-	int w;
-	int h;
-	
+	int	w;
+	int	h;
+
 	vars->map_textures.wall = mlx_xpm_file_to_image(vars->mlx,
 			"./assets/wall.xpm", &w, &h);
 	vars->map_textures.floor = mlx_xpm_file_to_image(vars->mlx,
@@ -34,12 +34,11 @@ int	load_map_textures(t_vars *vars)
 	return (1);
 }
 
-
 void	render_map(t_vars *vars)
 {
 	void	*img;
-	int	x;
-	int y;
+	int		x;
+	int		y;
 
 	y = 0;
 	while (vars->map[y])
@@ -47,7 +46,6 @@ void	render_map(t_vars *vars)
 		x = 0;
 		while (vars->map[y][x])
 		{
-			img = NULL;
 			if (vars->map[y][x] == '1')
 				img = vars->map_textures.wall;
 			else if (vars->map[y][x] == 'C')
@@ -57,7 +55,8 @@ void	render_map(t_vars *vars)
 			else if (vars->map[y][x] != 'P')
 				img = vars->map_textures.floor;
 			if (img)
-				mlx_put_image_to_window(vars->mlx, vars->win, img, x * TILE_SIZE, y * TILE_SIZE);
+				mlx_put_image_to_window(vars->mlx, vars->win, img, x
+					* TILE_SIZE, y * TILE_SIZE);
 			x++;
 		}
 		y++;
